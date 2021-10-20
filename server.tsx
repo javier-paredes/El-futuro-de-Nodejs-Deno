@@ -1,31 +1,25 @@
+// @deno-types="https://deno.land/x/servest@v1.3.1/types/react/index.d.ts"
 import React from "https://dev.jspm.io/react/index.js";
+// @deno-types="https://deno.land/x/servest@v1.3.1/types/react-dom/server/index.d.ts"
 import ReactDOMServer from "https://dev.jspm.io/react-dom/server.js";
-import { contentTypeFilter,createApp } from "https://deno.land/x/servest@v1.3.1/mod.ts";
-// import { } from "https://deno.land/std@0.112.0/fmt/colors.ts"; //colors
+import { contentTypeFilter, createApp } from "https://deno.land/x/servest@v1.3.4/mod.ts";
 
 const app = createApp();
+
 const colores: Array<string> = [];
 
 app.post(
   '/',
   contentTypeFilter("application/x-www-form-urlencoded"),
-  async(req) => {
+  // deno-lint-ignore no-explicit-any
+  async(req:any) => {
     const formColores = await req.formData()
     console.log(formColores.value("color"))
     colores.push(formColores.value("color"))
 })
 
-// function listadoColores(props:Array<string>) {
-//   let colores = props.colores
-//   let listaColores = colores.map((color) =>
-//     <li>{color}</li>
-//   );
-//   return (
-//     <ul>{listaColores}</ul>
-//   );
-// }
-
-app.handle("/", async (req) => {
+// deno-lint-ignore no-explicit-any
+app.handle("/", async (req:any) => {
   await req.respond({
     status: 200,
     headers: new Headers({
@@ -47,7 +41,7 @@ app.handle("/", async (req) => {
 
           <ul style={{color:"white"}}>
             { colores.map((color) => 
-              <li key={color} style={ {color:`${color}`}}>{ color }</li> ) }
+              <li key={ color } style={{color:`${color}`}}>{ color }</li> ) }
           </ul>
 
         </body>
@@ -56,4 +50,4 @@ app.handle("/", async (req) => {
     ),
   });
 });
-app.listen({ port: 8899 });
+app.listen({ port: 8080 });
